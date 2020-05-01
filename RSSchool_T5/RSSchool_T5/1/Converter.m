@@ -30,11 +30,17 @@ NSString *KeyCountry = @"country";
         @"998" : @"UZ"
     };
     
+    NSString *rowString = [[NSString alloc] initWithString:string];
+    
     if ([string length] > 0) {
         NSString *firstCharacter = [string substringToIndex:1];
-        NSString *rowString = [[NSString alloc] initWithString:string];
+        
         if ([firstCharacter isEqualToString:@"+"]) {
             rowString = [string substringFromIndex:1];
+        }
+        
+        if ([rowString length] > 12) {
+            rowString = [rowString substringToIndex:12];
         }
         
         firstCharacter = [rowString substringToIndex:1];
@@ -74,14 +80,14 @@ NSString *KeyCountry = @"country";
         
     }
     
-    return @{KeyPhoneNumber: [NSString stringWithFormat:@"+%@", string],
+    return @{KeyPhoneNumber: [NSString stringWithFormat:@"+%@", rowString],
              KeyCountry: @""};
 }
 
 -(NSString *)getFormatted:(NSString *)string For:(NSString *)code {
     NSDictionary *formats = @{
-        @"RU" : @"+x (xxx) xxx xx xx", //10
-        @"KZ" : @"+x (xxx) xxx xx xx", //10
+        @"RU" : @"+x (xxx) xxx-xx-xx", //10
+        @"KZ" : @"+x (xxx) xxx-xx-xx", //10
         @"MD" : @"+xxx (xx) xxx-xxx", //8
         @"AM" : @"+xxx (xx) xxx-xxx", //8
         @"BY" : @"+xxx (xx) xxx-xx-xx", //9
@@ -92,6 +98,7 @@ NSString *KeyCountry = @"country";
         @"KG" : @"+xxx (xx) xxx-xx-xx", //9
         @"UZ" : @"+xxx (xx) xxx-xx-xx" //9
     };
+    
     if ([formats objectForKey:code]) {
         
         NSString *requiredFormat = [formats objectForKey:code];
@@ -111,7 +118,7 @@ NSString *KeyCountry = @"country";
             } }
         
         
-        //determine first x occurance
+        //determine first x occurence
         NSString *match = @"x";
         NSString *preMatch;
 
